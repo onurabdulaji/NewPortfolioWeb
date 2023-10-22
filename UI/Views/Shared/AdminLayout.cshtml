@@ -1,0 +1,25 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+@await Html.PartialAsync("/Views/Shared/AdminPartial/HeadPartial.cshtml")
+<body>
+    @await Html.PartialAsync("/Views/Shared/AdminPartial/TopNavPartial.cshtml")
+    @await Html.PartialAsync("/Views/Shared/AdminPartial/NavbarPartial.cshtml")
+    <main id="main" class="main">
+        <div class="pagetitle">
+            <h1>@ViewBag.v1</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/Admin/Dashboard/Index/">@ViewBag.v2</a></li>
+                    <li class="breadcrumb-item active">@ViewBag.v3</li>
+                </ol>
+            </nav>
+        </div>
+        @RenderBody()
+    </main>
+    @await Html.PartialAsync("/Views/Shared/AdminPartial/FooterPartial.cshtml")
+    @await Html.PartialAsync("/Views/Shared/AdminPartial/ScriptsPartial.cshtml")
+</body>
+</html>

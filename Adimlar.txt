@@ -1,0 +1,148 @@
+<<<<<<< HEAD
+﻿SOLID yazılım prensipleri :
+S — Single-responsibility principle
+ÖZET: Bir sınıf (nesne) yalnızca bir amaç uğruna değiştirilebilir, o da o sınıfa yüklenen sorumluluktur,
+yani bir sınıfın(fonksiyona da indirgenebilir) yapması gereken yalnızca bir işi olması gerekir.
+
+O — Open-closed principle
+ÖZET: Bir sınıf ya da fonksiyon halihazırda var olan özellikleri korumalı ve değişikliğe izin vermemelidir.
+Yani davranışını değiştirmiyor olmalı ve yeni özellikler kazanabiliyor olmalıdır.
+
+L — Liskov substitution principle
+ÖZET: Kodlarımızda herhangi bir değişiklik yapmaya gerek duymadan alt sınıfları, türedikleri(üst) sınıfların yerine kullanabilmeliyiz.
+
+I — Interface segregation principle
+ÖZET: Sorumlulukların hepsini tek bir arayüze toplamak yerine daha özelleştirilmiş birden fazla arayüz oluşturmalıyız.
+
+D — Dependency Inversion Principle
+ÖZET: Sınıflar arası bağımlılıklar olabildiğince az olmalıdır özellikle üst seviye sınıflar alt seviye sınıflara bağımlı olmamalıdır.
+
+Budur.
+=======
+
+
+>>>>>>> 9112cdaaadc9a9079ae558b39079053072c61eee
+
+Proje Adimlari
+
+// N Katmanli Mimari Olusuturuldu.
+
+* PresentationLayer
+* EntityLayer
+* DataAccessLayer
+* BusinessLayer
+* DTOLayer
+* Daha sonra bir de APILayer Eklenecek.
+
+*- Proje Referanslari Su Sekilde Olmali : Bunlar Migration Sirasinda Eklenelebilir.
+PresentationLayer => BusinessLayer , DataAccessLayer , EntityLayer , DTOLayer
+DataAccessLayer => EntityLayer
+BusinessLayer => DataAccessLayer,EntityLayer,DTOLayer
+
+
+// Gereken Paktetlerin Eklenmesi :
+* EfCore
+* FluentValidation
+* AutoMapper => UI'da kullanilacak gibi , Bunu Ef bagimliligini azaltmak icin kullanabiliriz. Ileri UoW Yada CQORS gibilerini kullabiliriz.
+* Swagger => API geldikten sonra.
+* Identity kesin eklenecek , admin yapimi sirasinda.
+
+// Welcome ve Portfolio Arasindaki Relation Eklenecek.
+* Welcome => Portfolio Sinifi icine relation eklendi.
+
+
+-*-*-*-*-*-*-*-*-*-*-*-DAL*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+
+DAL > Abstract Interfaceler Tanimlandi.
+DAL > GenericInterface Olusturuldu.
+DAL > Repository Olusturuldu ve GenericRepository Tanimlandi , Implementationlar Olusturuldu ve icleri doldu.
+DAL > EntityFramework Siniflari Olusturuldu.GenericRepo'dan miras alindi.
+
+-*-*-**-*-*-*-*-*-*-*-BAL*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+
+BAL > Abstract Interfaceler tanimlandi
+BAL > Abstract GenericService olusturuldu.
+BAL > Concrete > Managerler olusuturulacak ve EntityService'den miras alinacak.
+BAL > Container > Extension Olusuturldu ve ContainerDependencies Olusturuldu.
+=> Normalde bu olusuturulabilir program.cs'te fakat , kod yogunlugunu onlemek amaciyla farkli bir yerde olusturdum.
+=> Ve bunu program.cs'te builder.Services.ContainerDependencies(); olarak tanittim.
+=> Bunun olmasi icin sinifin ve motodun static olmasi lazimdir.
+=> Bunu yapmamizin baslica amaci Ef bagimligini biraz olsun ortadan kaldirmak.
+=> Ve normalde lazim cagirilsin sinif DAL Katmanile.
+=> Ileride revizeye gidersek eger , CQORS yada UoW kullanmak istersek yeniden duzenlenmesi gerekecek.
+
+-*-*-**-*-*-*-*-*-*-*-Mimari Genel Olarak Olusuturuldu*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+
+-*-*-**-*-*-*-*-*-*-*- Tum Adimlar Sirasiyla Eklenecek *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-
+
+UI => Kullanici temanin eklenmesi => wwwroot klasoru icine => MyPortfolio
+UI => Yeni bir layout eklenmesi
+UI => Ana temanin indexte bulunan herseyin UILayout iceresini kopyalanmasi.
+UI => Css , JS , ve resim dosyalarinin yollarinin belirlenmesi.
+UI => Shared icerisinde bir UIPartial klasoru olusturulmasi ve Layout bolunmesi.
+UI => Views => UIPartial => Ve burada Layout bolunmesi.
+UI => UILayout kalanini Index icine atmaliyiz ve burada ComponentView'lere ihtiyacimiz olacak.
+UI => UI tarafina ViewComponents klasorunun eklenmesi , ve burada siniflar olusturulmakta.
+UI => ViewComponents olusturuldu ve bunu Shared icinde Component klasoru icinde olusturdugumuz sinif ismi ile cagilmaliyiz.
+UI => Ondan sonra Index icinde cagirilmali.
+=> 01.10.2023 05.30
+EF => Relation Eklendi.
+EF => EfPortfolioDal icine GetListWithWelcomeList yeni bir metot eklendi.
+UI => Welcome listeme kisimi tamamlandi.
+UI => Skill listeme islemi tamamlandi.
+UI => Servise listeme islemi tamamlandi.
+UI => Testomonial listeleme islemi tamamlandi.
+UI => Tema bazinda bazi duzenlemer yapildi.
+EL => Iki yeni sinif eklendi.
+DAL => Relation ve Include eklendi.
+DAL => Interface ve EF tamamlandi.
+BAL => Servis Eklendi.
+UI => About Controller ve About Sayfasi Eklendi.
+UI => About ve SkillValue listelenmesi yapildi.
+=> 02.10.2023
+UI => Servis controller ve Index sayfasi olusuturuldu.
+UI => Servisler listelendi.
+UI => Portfolio Controller ve Index sayfasi eklendi.
+UI => Portfolio listelendi.
+UI => Burada yine Portfolio Ve Welcome Iliskisi Kullanildi.
+EL => Contact Sinifi Eklendi.
+DAL => Contact sinifi icin Intereface ve Ef eklendi.
+BAL => Contact icin Service ve Manager eklendi.
+Extension => Contact alanlari eklendi.
+UI => Mapper Eklendi
+DTO => ContactDTOS => ContactListDto Eklendir.
+UI => Contact Form alani calismakta db islemleri gerceklesti.
+UI => Simdide Full Mail Gerekli.
+03.10.2023
+DTO => MailRequestDTO duzenlendi.
+UI => Contact Controller ve Contact Index eklendi.
+UI => MailController ve MailIndex Eklendi.
+UI => NavbarPartial tarafinda cok kucuk duzenlemeler yapildi.
+Core => Contact Form ve Message Form calismakta.
+@* 
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <h2>Message Me</h2>
+            <form method="post">
+                <div class="form-group text-center">
+                    <label for="Name">Name:</label>
+                    <input type="text" class="form-control" id="Name" name="Name" asp-for="Name" required />
+                </div>
+                <div class="form-group text-center">
+                    <label for="Email">E-Mail Adress:</label>
+                    <input type="email" class="form-control" id="Email" name="Email" asp-for="Email" required />
+                </div>
+                <div class="form-group text-center">
+                    <label for="Message">Your Message:</label>
+                    <textarea class="form-control" id="Message" name="Message" asp-for="Message" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-outline-success text-center">Send</button>
+            </form>
+        </div>
+    </div>
+</div> *@
+
+Program => builder.Services.AddDbContext<Context>();
+Program => builder.Services.AddAutoMapper(typeof(Program));
+Program => builder.Services.ContainerDependencies();

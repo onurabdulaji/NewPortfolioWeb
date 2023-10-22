@@ -1,16 +1,7 @@
-﻿using Castle.Components.DictionaryAdapter.Xml;
-using DAL.Concrete;
-using EL.Models;
-using Microsoft.AspNetCore.Identity;
+﻿using DAL.Concrete;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BAL.Dependencies
 {
@@ -20,12 +11,10 @@ namespace BAL.Dependencies
         {
             ServiceProvider provider = services.BuildServiceProvider();
             IConfiguration configuration = provider.GetService<IConfiguration>();
-
             services.AddDbContextPool<Context>(options => options.UseSqlServer(configuration.GetConnectionString("PortfolioDB")).UseLazyLoadingProxies());
-
             services.AddDbContext<Context>(options => options.UseSqlServer(configuration.GetConnectionString("PortfolioDB")).UseLazyLoadingProxies());
 
-            services.AddIdentityCore<AppUser>().AddEntityFrameworkStores<Context>();
+
         }
     }
 }
